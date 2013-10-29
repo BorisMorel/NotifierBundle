@@ -19,11 +19,14 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('imag_notifier');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
+        $rootNode
+            ->children()
+                ->scalarNode('default_from')->defaultValue('phdCall@FQDN.com')->end()
+            ->scalarNode('default_subject')->defaultValue('Default subject')->end()
+            ->scalarNode('prefix_subject')->defaultValue('')->end()
+            ->end()
+            ;
+            
         return $treeBuilder;
     }
 }

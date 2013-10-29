@@ -1,18 +1,30 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="imag_notifier.provider.class">IMAG\NotifierBundle\Provider\NotifierProvider</parameter>
-    </parameters>
+  <parameters>
+    <!-- configuration tree -->
+    <parameter key="imag_notifier.context.class">IMAG\NotifierBundle\Context\Context</parameter>
+    
+    <!-- Provider -->
+    <parameter key="imag_notifier.provider.class">IMAG\NotifierBundle\Provider\NotifierProvider</parameter>
 
-    <services>
-        <service id="imag_notifier.provider" class="%imag_notifier.provider.class%">
-          <argument type="service" id="mailer" />
-          <argument type="service" id="templating" />
-        </service>
-    </services>
+  </parameters>
+
+  <services>
+    <!-- configuration tree -->
+    <service id="imag_notifier.context" class="%imag_notifier.context.class%">
+      <argument>%imag_notifier.context.params%</argument>
+    </service>
+
+    <!-- Provider -->
+    <service id="imag_notifier.provider" class="%imag_notifier.provider.class%">
+      <argument type="service" id="mailer" />
+      <argument type="service" id="templating" />
+      <argument type="service" id="imag_notifier.context" />
+    </service>
+  </services>
 
 </container>
