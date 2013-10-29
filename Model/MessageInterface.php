@@ -1,50 +1,44 @@
 <?php
 
-namespace IMAG\NotifierBundle\Notifier;
+namespace IMAG\NotifierBundle\Model;
 
-interface NotifierInterface
+interface MessageInterface
 {
-    public function __construct(\Swift_mailer $mailer, Context $context);
-
-    public function setSubject($subject);
-
-    public function getSubject();
-
     public function setFrom($from);
-
+    
     public function getFrom();
     
     public function addTo($to);
-
+    
     public function removeTo($to);
-
+    
     public function setTo(array $to);
     
     public function getTo();
-
+    
     public function addCc($cc);
-
+    
     public function removeCc($cc);
-
+    
     public function setCc(array $cc);
-
+    
     public function getCc();
-
+    
     public function addBcc($bcc);
-
+    
     public function removeBcc($bcc);
-
+    
     public function setBcc(array $bcc);
-
+    
     public function getBcc();
 
-    /* public function addAttachment($entity); */
+    public function setSubject($subject);
+    
+    public function getSubject();
 
-    /* public function removeAttachment($entity); */
+    public function setBody($body);
+    
+    public function getBody();
 
-    /* public function setAttachment(array $entities); */
-
-    /* public function getAttachment(); */
-
-    public function send();
+    public function compile();
 }
