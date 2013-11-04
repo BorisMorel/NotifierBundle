@@ -12,6 +12,11 @@ use IMAG\NotifierBundle\Model\MessageInterface,
     IMAG\NotifierBundle\Model\Attachment    
     ;
 
+/**
+ * Main class to manage the notifier system
+ *
+ * @author Boris Morel <boris.morel@imag.fr>
+ */
 class NotifierProvider
 {
     private
@@ -20,12 +25,21 @@ class NotifierProvider
         $context
         ;
     
+    /**
+     * @param Swift_mailer \$mailer The mailer engine
+     * @param Context $context The mailer engine
+     */
     public function __construct(\Swift_mailer $mailer, Context $context)
     {
         $this->mailer = $mailer;
         $this->context = $context;
     }
 
+    /**
+     * @param TwigEngine $tplEngine Set the html engine
+     *
+     * @return NotifierProvider
+     */
     public function setTwigEngine(TwigEngine $tplEngine = null)
     {
         $this->tplEngine = $tplEngine;
@@ -33,6 +47,11 @@ class NotifierProvider
         return $this;
     }
 
+    /**
+     * Create a instance of basic message
+     *
+     * @return BaseMessage
+     */    
     public function createMessage()
     {
         $message = new BaseMessage();
@@ -44,6 +63,11 @@ class NotifierProvider
         return $message;
     }
 
+    /**
+     * Create a instance of html message
+     *
+     * @return HtmlMessage
+     */
     public function createHtmlMessage()
     {
         if (null === $this->tplEngine) {
@@ -59,11 +83,24 @@ class NotifierProvider
         return $message;
     }
 
+    /**
+     * Create a instance of attachment
+     *
+     * @return Attachment
+     */
     public function createAttachment()
     {
         return new Attachment();
     }
     
+
+    /**
+     * Method triggered to sent the message
+     *
+     * @param MessageInterface $message Instance of message
+     *
+     * @return bool
+     */
     public function send(MessageInterface $message)
     {
         if (empty($message->getTo())
