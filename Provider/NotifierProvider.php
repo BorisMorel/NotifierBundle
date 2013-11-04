@@ -19,11 +19,17 @@ class NotifierProvider
         $context
         ;
     
-    public function __construct(\Swift_mailer $mailer, TwigEngine $tplEngine, Context $context)
+    public function __construct(\Swift_mailer $mailer, Context $context)
     {
-        $this->tplEngine = $tplEngine;
         $this->mailer = $mailer;
         $this->context = $context;
+    }
+
+    public function setTwigEngine(TwigEngine $tplEngine = null)
+    {
+        $this->tplEngine = $tplEngine;
+
+        return $this;
     }
 
     public function createMessage()
@@ -39,6 +45,10 @@ class NotifierProvider
 
     public function createHtmlMessage()
     {
+        if (null === $this->tplEngine) {
+            throw new \InvalidArgumentException('Html engine is required to create html message');
+        }
+
         $message = new HtmlMessage($this->tplEngine);
         $message
             ->setFrom($this->context->getDefaultFrom())
@@ -50,6 +60,13 @@ class NotifierProvider
 
     public function send(MessageInterface $message)
     {
+        if (empty($message->getTo())
+            && empty($message->getCc())
+            && empty($message->getBcc())
+        ) {
+            throw new \RuntimeException('You must set at least one recipient');
+        }
+        
         $this->prepare($message);
         $this->mailer->send($message->compile());
     }

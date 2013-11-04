@@ -22,8 +22,12 @@
     <!-- Provider -->
     <service id="imag_notifier.provider" class="%imag_notifier.provider.class%">
       <argument type="service" id="mailer" />
-      <argument type="service" id="templating" />
       <argument type="service" id="imag_notifier.context" />
+
+      <call method="setTwigEngine">
+        <argument type="service" id="templating" on-invalid="null" />
+      </call>
+
     </service>
   </services>
 
