@@ -1,0 +1,27 @@
+{
+    "name": "imag/notifier-bundle",
+    "description": "Notifier bundle for Symfony 2",
+    "homepage": "http://github.com/BorisMorel/NotifierBundle",
+    "license": "CeCILL",
+    "authors": [
+        {
+            "name": "Boris Morel",
+            "email": "boris.morel@imag.fr",
+            "role": "Maintainer",
+            "homepage" : "https://github.com/BorisMorel"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">2.0"
+    },
+    "source": {
+        "url": "https://github.com/BorisMorel/NotifierBundle.git",
+        "type": "git",
+        "reference": "origin/master"
+    },
+    "autoload": {
+        "psr-0": { "IMAG\\NotifierBundle": "" }
+    },
+    "target-dir": "IMAG/NotifierBundle"
+}
