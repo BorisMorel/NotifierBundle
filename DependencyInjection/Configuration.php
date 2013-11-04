@@ -21,9 +21,9 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('imag_notifier');
         $rootNode
             ->children()
-                ->scalarNode('default_from')->defaultValue('phdCall@FQDN.com')->end()
-            ->scalarNode('default_subject')->defaultValue('Default subject')->end()
-            ->scalarNode('prefix_subject')->defaultValue('')->end()
+                ->scalarNode('default_from')->defaultValue('fqdn@d.tld')->end()
+                ->scalarNode('default_subject')->defaultValue('Default subject')->end()
+                ->scalarNode('prefix_subject')->defaultValue('')->end()
             ->end()
             ;
             
