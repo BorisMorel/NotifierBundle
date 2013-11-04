@@ -152,6 +152,22 @@ class BaseMessage implements MessageInterface
         return isset($this->params['body']) ? $this->params['body'] : null;
     }
 
+    public function addAttachment(Attachment $attachment)
+    {
+        $this->attachments[] = $attachment;
+
+        return $this;
+    }
+
+    public function setAttachment(array $attachments)
+    {
+        foreach ($attachments as $attachment) {
+            $this->addAttachment($attachment);
+        }
+
+        return $this;
+    }
+    
     public function compile()
     {
         $message = \Swift_Message::newInstance()
@@ -162,6 +178,10 @@ class BaseMessage implements MessageInterface
             ->setSubject($this->getSubject())
             ->setBody($this->getBody())
             ;
+
+        foreach ($this->attachments as $attachment) {
+            $message->attach($attachment->compile());
+        }
 
         return $message;
     }

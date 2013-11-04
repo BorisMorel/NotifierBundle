@@ -40,5 +40,9 @@ interface MessageInterface
     
     public function getBody();
 
+    public function addAttachment(Attachment $attachment);
+
+    public function setAttachment(array $attachments);
+
     public function compile();
 }

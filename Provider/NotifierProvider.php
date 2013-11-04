@@ -8,7 +8,8 @@ use IMAG\NotifierBundle\Context\Context;
 
 use IMAG\NotifierBundle\Model\MessageInterface,
     IMAG\NotifierBundle\Model\BaseMessage,
-    IMAG\NotifierBundle\Model\HtmlMessage
+    IMAG\NotifierBundle\Model\HtmlMessage,
+    IMAG\NotifierBundle\Model\Attachment    
     ;
 
 class NotifierProvider
@@ -58,6 +59,11 @@ class NotifierProvider
         return $message;
     }
 
+    public function createAttachment()
+    {
+        return new Attachment();
+    }
+    
     public function send(MessageInterface $message)
     {
         if (empty($message->getTo())
