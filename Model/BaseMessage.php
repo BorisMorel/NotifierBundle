@@ -62,7 +62,7 @@ class BaseMessage implements MessageInterface
             $address = $cc;
         }
 
-        $this->params['cc'][$key] = $cc;
+        $this->params['cc'][$address] = $cc;
 
         return $this;
     }
@@ -73,7 +73,7 @@ class BaseMessage implements MessageInterface
             $address = $cc;
         }
 
-        unset($this->params['cc'][$key]);
+        unset($this->params['cc'][$address]);
 
         return $this;
     }
@@ -98,7 +98,7 @@ class BaseMessage implements MessageInterface
             $address = $bcc;
         }
 
-        $this->params['bcc'][$key] = $bcc;
+        $this->params['bcc'][$address] = $bcc;
 
         return $this;
     }
@@ -109,7 +109,7 @@ class BaseMessage implements MessageInterface
             $address = $bcc;
         }
 
-        unset($this->params['bcc'][$key]);
+        unset($this->params['bcc'][$address]);
 
         return $this;
     }
