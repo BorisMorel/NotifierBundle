@@ -13,6 +13,7 @@ class HtmlMessage extends BaseMessage
 
     public function __construct(TwigEngine $tplEngine)
     {
+        parent::__construct();
         $this->tplEngine = $tplEngine;
     }
 

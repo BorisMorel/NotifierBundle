@@ -5,8 +5,14 @@ namespace IMAG\NotifierBundle\Model;
 class BaseMessage implements MessageInterface
 {
     private
-        $param
+        $param,
+        $attachments
         ;
+
+    public function __construct()
+    {
+        $this->attachments = array();
+    }
 
     public function setFrom($from)
     {
