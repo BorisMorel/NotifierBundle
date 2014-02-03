@@ -5,12 +5,7 @@ namespace IMAG\NotifierBundle\Provider;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 use IMAG\NotifierBundle\Context\Context;
-
-use IMAG\NotifierBundle\Model\MessageInterface,
-    IMAG\NotifierBundle\Model\BaseMessage,
-    IMAG\NotifierBundle\Model\HtmlMessage,
-    IMAG\NotifierBundle\Model\Attachment    
-    ;
+use IMAG\NotifierBundle\Manager\ManagerInterface;
 
 /**
  * Main class to manage the notifier system
@@ -19,107 +14,41 @@ use IMAG\NotifierBundle\Model\MessageInterface,
  */
 class NotifierProvider
 {
-    private
-        $tplEngine,
-        $mailer,
-        $context
-        ;
-    
     /**
-     * @param Swift_mailer \$mailer The mailer engine
-     * @param Context $context The mailer engine
+     * @var \Swift_mailer
      */
-    public function __construct(\Swift_mailer $mailer, Context $context)
+    private $mailer;
+
+    /**
+     * @var array
+     */
+    private $types;
+
+    public function __construct(\Swift_mailer $mailer)
     {
         $this->mailer = $mailer;
-        $this->context = $context;
+        $this->types = array();
     }
 
-    /**
-     * @param TwigEngine $tplEngine Set the html engine
-     *
-     * @return NotifierProvider
-     */
-    public function setTwigEngine(TwigEngine $tplEngine = null)
+    public function addManager(ManagerInterface $manager, $alias)
     {
-        $this->tplEngine = $tplEngine;
-
-        return $this;
+        $this->types[$alias] = $manager;
     }
 
-    /**
-     * Create a instance of basic message
-     *
-     * @return BaseMessage
-     */    
-    public function createMessage()
+    public function getManager($alias)
     {
-        $message = new BaseMessage();
-        $message
-            ->setFrom($this->context->getDefaultFrom())
-            ->setSubject($this->context->getDefaultSubject())
-            ;
-
-        return $message;
-    }
-
-    /**
-     * Create a instance of html message
-     *
-     * @return HtmlMessage
-     */
-    public function createHtmlMessage()
-    {
-        if (null === $this->tplEngine) {
-            throw new \InvalidArgumentException('Html engine is required to create html message');
+        if (true === array_key_exists($alias, $this->types)) {
+            return $this->types[$alias];
         }
 
-        $message = new HtmlMessage($this->tplEngine);
-        $message
-            ->setFrom($this->context->getDefaultFrom())
-            ->setSubject($this->context->getDefaultSubject())
-            ;
-
-        return $message;
+        return;
     }
 
-    /**
-     * Create a instance of attachment
-     *
-     * @return Attachment
-     */
-    public function createAttachment()
+    public function send(ManagerInterface $manager)
     {
-        return new Attachment();
-    }
-    
-
-    /**
-     * Method triggered to sent the message
-     *
-     * @param MessageInterface $message Instance of message
-     *
-     * @return bool
-     */
-    public function send(MessageInterface $message)
-    {
-        if (empty($message->getTo())
-            && empty($message->getCc())
-            && empty($message->getBcc())
-        ) {
-            throw new \RuntimeException('You must set at least one recipient');
+        foreach ($manager->compile() as $message) {
+            $this->mailer->send($message);
         }
-        
-        $this->prepare($message);
-        $this->mailer->send($message->compile());
-    }
-
-    private function prepare(MessageInterface $message)
-    {
-        $message->setSubject(
-            $this->context->getPrefixSubject()
-            .$message->getSubject()
-        );
     }
 }
 
