@@ -49,6 +49,8 @@ class NotifierProvider
         foreach ($manager->compile() as $message) {
             $this->mailer->send($message);
         }
+
+        $manager->clear();
     }
 }
 
