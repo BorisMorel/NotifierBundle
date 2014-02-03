@@ -11,6 +11,11 @@
     <!-- Provider -->
     <parameter key="imag_notifier.provider.class">IMAG\NotifierBundle\Provider\NotifierProvider</parameter>
 
+    <!-- Managers -->
+    <parameter key="imag_notifier.manager.abstract.class">IMAG\NotifierBundle\Manager\AbstractManager</parameter>
+    <parameter key="imag_notifier.manager.base.class">IMAG\NotifierBundle\Manager\BaseManager</parameter>
+    <parameter key="imag_notifier.manager.html.class">IMAG\NotifierBundle\Manager\HtmlManager</parameter>
+
   </parameters>
 
   <services>
@@ -22,12 +27,19 @@
     <!-- Provider -->
     <service id="imag_notifier.provider" class="%imag_notifier.provider.class%">
       <argument type="service" id="mailer" />
+    </service>
+    
+    <!-- Managers -->
+    <service id="imag_notifier.manager.abstract" class="%imag_notifier.manager.abstract.class%" abstract="true" public="false">
       <argument type="service" id="imag_notifier.context" />
+    </service>
 
-      <call method="setTwigEngine">
-        <argument type="service" id="templating" on-invalid="null" />
-      </call>
-
+    <service id="imag_notifier.manager.base" class="%imag_notifier.manager.base.class%" parent="imag_notifier.manager.abstract">
+      <tag name="imag_notifier.manager" alias="base" />
+    </service>
+    <service id="imag_notifier.manager.html" class="%imag_notifier.manager.html.class%" parent="imag_notifier.manager.abstract">
+      <argument type="service" id="twig" on-invalid="null" />
+      <tag name="imag_notifier.manager" alias="html" />
     </service>
   </services>
 
