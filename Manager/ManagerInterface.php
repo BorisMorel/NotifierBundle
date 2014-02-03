@@ -10,4 +10,5 @@ interface ManagerInterface
     public function createAttachment();    
     public function addMessage(MessageInterface $message);
     public function compile();
+    public function clear();
 }

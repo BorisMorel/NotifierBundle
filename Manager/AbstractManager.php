@@ -90,4 +90,9 @@ abstract class AbstractManager implements ManagerInterface
 
         return $swiftAttachment;
     }
+
+    public function clear()
+    {
+        $this->messages = array();
+    }
 }
