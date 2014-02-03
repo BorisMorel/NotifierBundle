@@ -2,27 +2,16 @@
 
 namespace IMAG\NotifierBundle\Model;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
-
 class HtmlMessage extends BaseMessage
 {
-    private
-        $tplEngine,
-        $tpl
+    private 
+        $tpl,
+        $subjectBlock,
+        $bodyBlock
         ;
-
-    public function __construct(TwigEngine $tplEngine)
-    {
-        parent::__construct();
-        $this->tplEngine = $tplEngine;
-    }
 
     public function setTemplate($tpl, array $vars = array())
     {
-        if (!$this->tplEngine->exists($tpl)) {
-            throw new \RuntimeException(sprintf('Template "%s" does not exist', $tpl));
-        }
-        
         $this->tpl = array(
             'tpl' => $tpl,
             'vars' => $vars,
@@ -31,14 +20,32 @@ class HtmlMessage extends BaseMessage
         return $this;
     }
 
-    public function compile()
+    public function getTemplate()
     {
-        $message = parent::compile();
-        $message->setBody(
-            $this->tplEngine->render($this->tpl['tpl'], array('data' => $this->tpl['vars'])),
-            'text/html'
-        );
+        return $this->tpl;
+    }
 
-        return $message;
+    public function setSubjectBlock($block)
+    {
+        $this->subjectBlock = $block;
+
+        return $this;
+    }
+
+    public function getSubjectBlock()
+    {
+        return null === $this->subjectBlock ? 'imagNotifierSubject' : $this->subjectBlock;
+    }
+
+    public function setBodyBlock($block)
+    {
+        $this->bodyBlock = $block;
+
+        return $this;
+    }
+
+    public function getBodyBlock()
+    {
+        return null === $this->bodyBlock ? 'imagNotifierBody' : $this->bodyBlock;
     }
 }

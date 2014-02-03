@@ -165,7 +165,7 @@ class BaseMessage implements MessageInterface
         return $this;
     }
 
-    public function setAttachment(array $attachments)
+    public function setAttachments(array $attachments)
     {
         foreach ($attachments as $attachment) {
             $this->addAttachment($attachment);
@@ -173,23 +173,9 @@ class BaseMessage implements MessageInterface
 
         return $this;
     }
-    
-    public function compile()
+
+    public function getAttachments()
     {
-        $message = \Swift_Message::newInstance()
-            ->setFrom($this->getFrom())
-            ->setTo($this->getTo())
-            ->setCc($this->getCc())
-            ->setBcc($this->getBcc())
-            ->setSubject($this->getSubject())
-            ->setBody($this->getBody())
-            ;
-
-        foreach ($this->attachments as $attachment) {
-            $message->attach($attachment->compile());
-        }
-
-        return $message;
+        return $this->attachments;
     }
-
 }

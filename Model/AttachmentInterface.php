@@ -14,9 +14,9 @@ interface AttachmentInterface
 
     public function getMimeType();
 
+    public function getFilename();
+
     public function getFile();
 
     public function getData();
-    
-    public function compile();
 }
